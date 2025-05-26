@@ -148,29 +148,34 @@ a {
 /* Top Banner Styles */
 .top-banner {
   background-color: #000;
-  color: #fff;
-  padding: 10px 0;
-  font-size: 0.95rem;
+  padding: 15px 0;
+  color: white;
 }
 
-.top-banner .nav-container {
-  display: flex;
-  justify-content: center;
+.nav-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 20px;
 }
 
-.top-banner .nav-links {
+.nav-links {
   list-style: none;
   display: flex;
+  justify-content: center;
   gap: 30px;
+  margin: 0;
+  padding: 0;
 }
 
-.top-banner .nav-links li a {
-  color: #fff;
-  text-transform: uppercase;
-  font-weight: 500;
+.nav-links li a {
+  color: white;
+  text-decoration: none;
+  font-weight: bold;
+  font-size: 1rem;
   transition: color 0.3s ease;
 }
 
-.top-banner .nav-links li a:hover {
+.nav-links li a:hover,
+.nav-links li a.active {
   color: #bfa760;
 }
