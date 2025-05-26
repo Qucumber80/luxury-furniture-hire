@@ -362,20 +362,16 @@
     el.className = "basket-item";
     el.innerHTML = `
       <span>
-        ${item.name}<br>
-        ${days} day${days > 1 ? 's' : ''} hire<br>
-        £${itemTotal.toFixed(2)}
+        ${item.name} – ${days} day${days > 1 ? 's' : ''} – £${itemTotal.toFixed(2)}
       </span>
       <button onclick="removeFromBasket(${index})">Remove</button>
     `;
     basketItemsDiv.appendChild(el);
   });
 
-  document.getElementById("basket-total").textContent = total.toLocaleString(undefined, {
-    minimumFractionDigits: 2,
-    maximumFractionDigits: 2
-  });
+  document.getElementById("basket-total").textContent = total.toFixed(2);
 }
+
 
     function formatDate(date) {
       return date.toISOString().split("T")[0];
