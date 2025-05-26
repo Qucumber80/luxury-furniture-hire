@@ -128,3 +128,32 @@ a {
   text-align: center;
   padding: 30px 0;
 }
+/* Top Banner Styles */
+.top-banner {
+  background-color: #000;
+  color: #fff;
+  padding: 10px 0;
+  font-size: 0.95rem;
+}
+
+.top-banner .nav-container {
+  display: flex;
+  justify-content: center;
+}
+
+.top-banner .nav-links {
+  list-style: none;
+  display: flex;
+  gap: 30px;
+}
+
+.top-banner .nav-links li a {
+  color: #fff;
+  text-transform: uppercase;
+  font-weight: 500;
+  transition: color 0.3s ease;
+}
+
+.top-banner .nav-links li a:hover {
+  color: #bfa760;
+}
