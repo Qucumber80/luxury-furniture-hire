@@ -127,7 +127,7 @@
     <label>End Date:
       <input type="date" id="end-Chain-Bed">
     </label>
-    <button onclick="addToCart('Luxury Chain Bed', 150, 'start-Chain-Bed', 'end-Chain-Bed')">Add to Basket</button>
+    <button onclick="addToBasketWithDates(1,'Luxury Chain Bed', 150, 'start-Chain-Bed', 'end-Chain-Bed')">Add to Basket</button>
   </div>
   <div class="item" data-id="2" data-price="30">
     <img src="images/flog.jpg" alt="Flog" />
@@ -139,7 +139,7 @@
     <label>End Date:
       <input type="date" id="end-Flog">
     </label>
-    <button onclick="addToCart('Luxury Flog', 150, 'start-Flog', 'end-Flog')">Add to Basket</button>
+    <button onclick="addToBasketWithDates(2,'Luxury Flog', 150, 'start-Flog', 'end-Flog')">Add to Basket</button>
   </div>
   <div class="item" data-id="3" data-price="40">
     <img src="images/lock and key.jpg" alt="Chains" />
@@ -151,7 +151,7 @@
       <label>End Date:
         <input type="date" id="end-Chains">
     </label>
-    <button onclick="addToCart('Luxury Chains', 150, 'start-Chains', 'end-Chains')">Add to Basket</button>
+    <button onclick="addToBasketWithDates(3,'Luxury Chains', 150, 'start-Chains', 'end-Chains')">Add to Basket</button>
   </div>
 </div>
 
@@ -163,19 +163,33 @@
 
 <script>
   const furnitureData = {
-    1: {name: "Chain Bed", price: 50},
-    2: {name: "Flog", price: 30},
-    3: {name: "Chains", price: 40},
+    1: { name: "Chain Bed", price: 50 },
+    2: { name: "Flog", price: 30 },
+    3: { name: "Chains", price: 40 },
   };
 
   let basket = {};
 
-  function addToBasket(id) {
+  function addToBasketWithDates(id, startId, endId) {
+    const startDate = document.getElementById(startId).value;
+    const endDate = document.getElementById(endId).value;
+
+    if (!startDate || !endDate) {
+      alert("Please select a start and end date.");
+      return;
+    }
+
     if (basket[id]) {
       basket[id].qty++;
     } else {
-      basket[id] = { ...furnitureData[id], qty: 1 };
+      basket[id] = {
+        ...furnitureData[id],
+        qty: 1,
+        startDate,
+        endDate
+      };
     }
+
     renderBasket();
   }
 
@@ -197,7 +211,7 @@
       const div = document.createElement('div');
       div.className = 'basket-item';
       div.innerHTML = `
-        <span>${item.name} x${item.qty}</span>
+        <span>${item.name} x${item.qty} (${item.startDate} to ${item.endDate})</span>
         <span>£${itemTotal}</span>
         <button onclick="removeFromBasket(${id})">X</button>
       `;
@@ -206,7 +220,8 @@
 
     document.getElementById('basket-total').innerText = total.toFixed(2);
   }
-<script>
+</script>
+
   let cart = [];
   let total = 0;
 
