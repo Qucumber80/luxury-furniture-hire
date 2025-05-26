@@ -206,7 +206,36 @@
 
     document.getElementById('basket-total').innerText = total.toFixed(2);
   }
-</script>
+<script>
+  let cart = [];
+  let total = 0;
 
+  function addToCart(name, price, startId, endId) {
+    const startDate = document.getElementById(startId).value;
+    const endDate = document.getElementById(endId).value;
+
+    if (!startDate || !endDate) {
+      alert("Please select a start and end date.");
+      return;
+    }
+
+    cart.push({ name, price, startDate, endDate });
+    total += price;
+    renderCart();
+  }
+
+  function renderCart() {
+    const cartItems = document.getElementById("cart-items");
+    cartItems.innerHTML = "";
+
+    cart.forEach(item => {
+      const li = document.createElement("li");
+      li.textContent = `${item.name} - £${item.price} (From ${item.startDate} to ${item.endDate})`;
+      cartItems.appendChild(li);
+    });
+
+    document.getElementById("total").textContent = total;
+  }
+</script>
 </body>
 </html>
