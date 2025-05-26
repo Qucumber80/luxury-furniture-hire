@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Furniture Hire</title>
+  <link rel="stylesheet" href="css/styles.css" />
+  <style>
+    /* quick styles for demo */
+    body {
+      font-family: Arial, sans-serif;
+      padding: 20px;
+      background: #f8f8f8;
+    }
+    h1 {
+      color: #333;
+      margin-bottom: 20px;
+    }
+    .furniture-list {
+      display: flex;
+      gap: 20px;
+      flex-wrap: wrap;
+      margin-bottom: 40px;
+    }
+    .item {
+      border: 1px solid #ccc;
+      background: white;
+      padding: 15px;
+      width: 220px;
+      box-shadow: 0 2px 6px rgb(0 0 0 / 0.1);
+      border-radius: 6px;
+      text-align: center;
+    }
+    .item img {
+      width: 100%;
+      height: 140px;
+      object-fit: cover;
+      border-radius: 4px;
+    }
+    .item h3 {
+      margin: 10px 0 6px;
+      font-size: 1.2rem;
+      color: #222;
+    }
+    .item p {
+      margin: 0 0 10px;
+      color: #666;
+      font-weight: 600;
+    }
+    .item button {
+      background: #bfa760;
+      color: white;
+      border: none;
+      padding: 10px 15px;
+      cursor: pointer;
+      font-weight: 600;
+      border-radius: 4px;
+      transition: background 0.3s ease;
+    }
+    .item button:hover {
+      background: #a38e48;
+    }
+
+    /* Basket Styles */
+    .basket {
+      position: fixed;
+      right: 20px;
+      top: 80px;
+      width: 320px;
+      background: #fff;
+      border: 1px solid #ccc;
+      padding: 15px;
+      max-height: 80vh;
+      overflow-y: auto;
+      box-shadow: 0 4px 10px rgb(0 0 0 / 0.1);
+      border-radius: 6px;
+    }
+    .basket h3 {
+      margin-top: 0;
+      border-bottom: 1px solid #ddd;
+      padding-bottom: 10px;
+      font-size: 1.4rem;
+    }
+    .basket-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 12px;
+      font-weight: 600;
+      color: #333;
+    }
+    .basket-item button {
+      background: #e74c3c;
+      border: none;
+      color: white;
+      padding: 4px 8px;
+      font-size: 0.8rem;
+      border-radius: 4px;
+      cursor: pointer;
+      transition: background 0.3s ease;
+    }
+    .basket-item button:hover {
+      background: #c0392b;
+    }
+    #basket-total {
+      font-size: 1.3rem;
+      color: #bfa760;
+      font-weight: 700;
+      margin-top: 10px;
+      display: block;
+      text-align: right;
+    }
+  </style>
+</head>
+<body>
+
+<h1>Furniture Hire</h1>
+
+<div class="furniture-list">
+  <div class="item" data-id="1" data-price="50">
+    <img src="images/sofa.jpg" alt="Sofa" />
+    <h3>Sofa</h3>
+    <p>£50 per hire</p>
+    <button onclick="addToBasket(1)">Add to Basket</button>
+  </div>
+  <div class="item" data-id="2" data-price="30">
+    <img src="images/coffee-table.jpg" alt="Coffee Table" />
+    <h3>Coffee Table</h3>
+    <p>£30 per hire</p>
+    <button onclick="addToBasket(2)">Add to Basket</button>
+  </div>
+  <div class="item" data-id="3" data-price="40">
+    <img src="images/armchair.jpg" alt="Armchair" />
+    <h3>Armchair</h3>
+    <p>£40 per hire</p>
+    <button onclick="addToBasket(3)">Add to Basket</button>
+  </div>
+</div>
+
+<div class="basket" id="basket">
+  <h3>Your Basket</h3>
+  <div id="basket-items"></div>
+  <p><strong>Total: £<span id="basket-total">0</span></strong></p>
+</div>
+
+<script>
+  const furnitureData = {
+    1: {name: "Sofa", price: 50},
+    2: {name: "Coffee Table", price: 30},
+    3: {name: "Armchair", price: 40},
+  };
+
+  let basket = {};
+
+  function addToBasket(id) {
+    if (basket[id]) {
+      basket[id].qty++;
+    } else {
+      basket[id] = { ...furnitureData[id], qty: 1 };
+    }
+    renderBasket();
+  }
+
+  function removeFromBasket(id) {
+    delete basket[id];
+    renderBasket();
+  }
+
+  function renderBasket() {
+    const basketItemsDiv = document.getElementById('basket-items');
+    basketItemsDiv.innerHTML = '';
+    let total = 0;
+
+    for (const id in basket) {
+      const item = basket[id];
+      const itemTotal = item.price * item.qty;
+      total += itemTotal;
+
+      const div = document.createElement('div');
+      div.className = 'basket-item';
+      div.innerHTML = `
+        <span>${item.name} x${item.qty}</span>
+        <span>£${itemTotal}</span>
+        <button onclick="removeFromBasket(${id})">X</button>
+      `;
+      basketItemsDiv.appendChild(div);
+    }
+
+    document.getElementById('basket-total').innerText = total.toFixed(2);
+  }
+</script>
+
+</body>
+</html>
