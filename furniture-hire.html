@@ -8,16 +8,17 @@
 </head>
 <body>
   <nav class="top-banner">
-  <div class="container nav-container">
-    <ul class="nav-links">
-      <li><a href="index.html">Home</a></li>
-      <li><a href="about.html">About Us</a></li>
-      <li><a href="furniture-hire.html" class="active">Furniture Hire</a></li>
-      <li><a href="gallery.html">Gallery</a></li>
-      <li><a href="contact.html">Contact</a></li>
-    </ul>
-  </div>
-</nav>
+    <div class="container nav-container">
+      <ul class="nav-links">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="about.html">About Us</a></li>
+        <li><a href="furniture-hire.html" class="active">Furniture Hire</a></li>
+        <li><a href="gallery.html">Gallery</a></li>
+        <li><a href="contact.html">Contact</a></li>
+      </ul>
+    </div>
+  </nav>
+
   <style>
     body {
       font-family: Arial, sans-serif;
@@ -140,301 +141,246 @@
       text-align: right;
     }
   </style>
-</head>
-<body>
 
-<h1>Furniture Hire</h1>
+  <h1>Furniture Hire</h1>
 
-<div class="furniture-list">
-  <!-- Item 1 -->
-  <div class="item" data-id="1" data-price="50">
-    <img src="images/chain-bed.jpg" alt="Chain-Bed" />
-    <h3>Chain Bed</h3>
-    <p>£50 per day</p>
-    <label for="start-1">Start Date:</label>
-    <input type="text" id="start-1" placeholder="Select start date" readonly />
-    <label for="end-1">End Date:</label>
-    <input type="text" id="end-1" placeholder="Select end date" readonly />
-    <button onclick="addToBasketWithDates(1)">Add to Basket</button>
+  <div class="furniture-list">
+    <div class="item" data-id="1" data-price="50">
+      <img src="images/chain-bed.jpg" alt="Chain-Bed" />
+      <h3>Chain Bed</h3>
+      <p>£50 per day</p>
+      <label for="start-1">Start Date:</label>
+      <input type="text" id="start-1" placeholder="Select start date" readonly />
+      <label for="end-1">End Date:</label>
+      <input type="text" id="end-1" placeholder="Select end date" readonly />
+      <button onclick="addToBasketWithDates(1)">Add to Basket</button>
+    </div>
+
+    <div class="item" data-id="2" data-price="30">
+      <img src="images/flog.jpg" alt="Flog" />
+      <h3>Flog</h3>
+      <p>£30 per day</p>
+      <label for="start-2">Start Date:</label>
+      <input type="text" id="start-2" placeholder="Select start date" readonly />
+      <label for="end-2">End Date:</label>
+      <input type="text" id="end-2" placeholder="Select end date" readonly />
+      <button onclick="addToBasketWithDates(2)">Add to Basket</button>
+    </div>
+
+    <div class="item" data-id="3" data-price="40">
+      <img src="images/lock-and-key.jpg" alt="Chains" />
+      <h3>Chains</h3>
+      <p>£40 per day</p>
+      <label for="start-3">Start Date:</label>
+      <input type="text" id="start-3" placeholder="Select start date" readonly />
+      <label for="end-3">End Date:</label>
+      <input type="text" id="end-3" placeholder="Select end date" readonly />
+      <button onclick="addToBasketWithDates(3)">Add to Basket</button>
+    </div>
   </div>
 
-  <!-- Item 2 -->
-  <div class="item" data-id="2" data-price="30">
-    <img src="images/flog.jpg" alt="Flog" />
-    <h3>Flog</h3>
-    <p>£30 per day</p>
-    <label for="start-2">Start Date:</label>
-    <input type="text" id="start-2" placeholder="Select start date" readonly />
-    <label for="end-2">End Date:</label>
-    <input type="text" id="end-2" placeholder="Select end date" readonly />
-    <button onclick="addToBasketWithDates(2)">Add to Basket</button>
+  <div class="basket" id="basket">
+    <h3>Your Basket</h3>
+    <div id="basket-items"></div>
+    <p><strong>Total: £<span id="basket-total">0</span></strong></p>
   </div>
 
-  <!-- Item 3 -->
-  <div class="item" data-id="3" data-price="40">
-    <img src="images/lock-and-key.jpg" alt="Chains" />
-    <h3>Chains</h3>
-    <p>£40 per day</p>
-    <label for="start-3">Start Date:</label>
-    <input type="text" id="start-3" placeholder="Select start date" readonly />
-    <label for="end-3">End Date:</label>
-    <input type="text" id="end-3" placeholder="Select end date" readonly />
-    <button onclick="addToBasketWithDates(3)">Add to Basket</button>
-  </div>
-</div>
-
-<div class="basket" id="basket">
-  <h3>Your Basket</h3>
-  <div id="basket-items"></div>
-  <p><strong>Total: £<span id="basket-total">0</span></strong></p>
-</div>
-
-<!-- Flatpickr JS -->
-<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
-
-<script>
-  // Furniture data
-  const furnitureData = {
-    1: { name: "Chain Bed", price: 50 },
-    2: { name: "Flog", price: 30 },
-    3: { name: "Chains", price: 40 },
-  };
-
-  // This holds all bookings per item as date ranges
-  // Format: { itemId: [ {start: Date, end: Date}, ... ] }
-  // Example initial bookings
-  const bookings = {
-    1: [
-      { start: new Date("2025-06-10"), end: new Date("2025-06-12") },
-      { start: new Date("2025-06-20"), end: new Date("2025-06-22") },
-    ],
-    2: [
-      { start: new Date("2025-06-15"), end: new Date("2025-06-17") }
-    ],
-    3: []
-  };
-
-  // Basket holds added bookings with qty 1 for simplicity
-  let basket = [];
-
-  // Constants for 48h buffer in milliseconds
-  const BUFFER_MS = 48 * 60 * 60 * 1000;
-
-  // Helper to add buffer around a booking to block delivery & collection days
-  function getBufferedRange(booking) {
-    return {
-      start: new Date(booking.start.getTime() - BUFFER_MS),
-      end: new Date(booking.end.getTime() + BUFFER_MS)
+  <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+  <script>
+    const furnitureData = {
+      1: { name: "Chain Bed", price: 50 },
+      2: { name: "Flog", price: 30 },
+      3: { name: "Chains", price: 40 },
     };
-  }
 
-  // Check if two date ranges overlap
-  function rangesOverlap(aStart, aEnd, bStart, bEnd) {
-    return aStart <= bEnd && bStart <= aEnd;
-  }
+    const bookings = {
+      1: [
+        { start: new Date("2025-06-10"), end: new Date("2025-06-12") },
+        { start: new Date("2025-06-20"), end: new Date("2025-06-22") },
+      ],
+      2: [{ start: new Date("2025-06-15"), end: new Date("2025-06-17") }],
+      3: []
+    };
 
-  // Initialize Flatpickr for each item
-  Object.keys(furnitureData).forEach(id => {
-    const startInput = document.getElementById(`start-${id}`);
-    const endInput = document.getElementById(`end-${id}`);
+    let basket = [];
+    const BUFFER_MS = 48 * 60 * 60 * 1000;
 
-    // Flatpickr instance for start date
-    const startCalendar = flatpickr(startInput, {
-      dateFormat: "Y-m-d",
-      minDate: "today",
-      disable: generateDisabledDates(id),
-      onChange(selectedDates) {
-        // When start date changes, update minDate of end date picker
-        if (selectedDates.length > 0) {
-          endCalendar.set('minDate', selectedDates[0]);
-          endCalendar.set('maxDate', addMaxEndDate(selectedDates[0]));
-        } else {
-          endCalendar.set('minDate', "today");
-          endCalendar.set('maxDate', null);
+    function getBufferedRange(booking) {
+      return {
+        start: new Date(booking.start.getTime() - BUFFER_MS),
+        end: new Date(booking.end.getTime() + BUFFER_MS)
+      };
+    }
+
+    function rangesOverlap(aStart, aEnd, bStart, bEnd) {
+      return aStart <= bEnd && bStart <= aEnd;
+    }
+
+    function checkBookingConflict(itemId, startDate, endDate) {
+      const desiredStart = new Date(startDate.getTime() - BUFFER_MS);
+      const desiredEnd = new Date(endDate.getTime() + BUFFER_MS);
+
+      const itemBookings = bookings[itemId] || [];
+      for (const b of itemBookings) {
+        const buffered = getBufferedRange(b);
+        if (rangesOverlap(desiredStart, desiredEnd, buffered.start, buffered.end)) {
+          return true;
         }
       }
-    });
 
-    // Flatpickr instance for end date
-    const endCalendar = flatpickr(endInput, {
-      dateFormat: "Y-m-d",
-      minDate: "today",
-      disable: generateDisabledDates(id)
-    });
-
-    // Save the calendars for possible future updates
-    furnitureData[id].startCalendar = startCalendar;
-    furnitureData[id].endCalendar = endCalendar;
-  });
-
-  // We limit max hire period to, say, 14 days from start date (adjust if needed)
-  function addMaxEndDate(startDate) {
-    const maxEnd = new Date(startDate);
-    maxEnd.setDate(maxEnd.getDate() + 14);
-    return maxEnd;
-  }
-
-  // Generate array of disabled dates for flatpickr based on bookings + buffer
-  // flatpickr accepts an array of Date objects or ranges {from, to}
-  function generateDisabledDates(itemId) {
-    if (!bookings[itemId] || bookings[itemId].length === 0) return [];
-
-    return bookings[itemId].flatMap(booking => {
-      const buffered = getBufferedRange(booking);
-      return [{ from: buffered.start, to: buffered.end }];
-    });
-  }
-
-  // Check if desired booking conflicts with existing bookings + buffer
- function checkBookingConflict(itemId, startDate, endDate) {
-  const desiredStart = new Date(startDate.getTime() - BUFFER_MS);
-  const desiredEnd = new Date(endDate.getTime() + BUFFER_MS);
-
-  // Check against confirmed bookings
-  const itemBookings = bookings[itemId] || [];
-  for (const b of itemBookings) {
-    const buffered = getBufferedRange(b);
-    if (rangesOverlap(desiredStart, desiredEnd, buffered.start, buffered.end)) {
-      return true;
-    }
-  }
-
-  // Check against pending basket entries
-  for (const item of basket) {
-    if (item.id !== itemId) continue;
-    const buffered = getBufferedRange({ start: item.startDate, end: item.endDate });
-    if (rangesOverlap(desiredStart, desiredEnd, buffered.start, buffered.end)) {
-      return true;
-    }
-  }
-
-  return false;
-}
-
-
-    // Add buffer to desired range
-    const desiredStart = new Date(startDate.getTime() - BUFFER_MS);
-    const desiredEnd = new Date(endDate.getTime() + BUFFER_MS);
-
-    for (const b of bookings[itemId]) {
-      const buffered = getBufferedRange(b);
-      if (rangesOverlap(desiredStart, desiredEnd, buffered.start, buffered.end)) {
-        return true;
+      for (const item of basket) {
+        if (item.id !== itemId) continue;
+        const buffered = getBufferedRange({ start: item.startDate, end: item.endDate });
+        if (rangesOverlap(desiredStart, desiredEnd, buffered.start, buffered.end)) {
+          return true;
+        }
       }
-    }
-    return false;
-  }
 
-  // Add booking to basket with validation
-  function addToBasketWithDates(itemId) {
-    const startInput = document.getElementById(`start-${itemId}`);
-    const endInput = document.getElementById(`end-${itemId}`);
-
-    if (!startInput.value || !endInput.value) {
-      alert("Please select both start and end dates.");
-      return;
+      return false;
     }
 
-    const startDate = new Date(startInput.value);
-    const endDate = new Date(endInput.value);
+    Object.keys(furnitureData).forEach(id => {
+      const startInput = document.getElementById(`start-${id}`);
+      const endInput = document.getElementById(`end-${id}`);
 
-    if (startDate > endDate) {
-      alert("Start date cannot be after end date.");
-      return;
-    }
+      const startCalendar = flatpickr(startInput, {
+        dateFormat: "Y-m-d",
+        minDate: "today",
+        disable: generateDisabledDates(id),
+        onChange(selectedDates) {
+          if (selectedDates.length > 0) {
+            endCalendar.set('minDate', selectedDates[0]);
+            endCalendar.set('maxDate', addMaxEndDate(selectedDates[0]));
+          } else {
+            endCalendar.set('minDate', "today");
+            endCalendar.set('maxDate', null);
+          }
+        }
+      });
 
-    // Check if booking conflicts with existing bookings or buffer days
-    if (checkBookingConflict(itemId, startDate, endDate)) {
-      alert("Selected dates overlap with existing booking or delivery/collection times. Please choose different dates.");
-      return;
-    }
+      const endCalendar = flatpickr(endInput, {
+        dateFormat: "Y-m-d",
+        minDate: "today",
+        disable: generateDisabledDates(id)
+      });
 
-    // Add booking to basket
-    basket.push({
-      id: itemId,
-      name: furnitureData[itemId].name,
-      price: furnitureData[itemId].price,
-      startDate,
-      endDate,
-      qty: 1
+      furnitureData[id].startCalendar = startCalendar;
+      furnitureData[id].endCalendar = endCalendar;
     });
 
-    // Also add to bookings to block future bookings on these dates
-    bookings[itemId].push({ start: startDate, end: endDate });
+    function addMaxEndDate(startDate) {
+      const maxEnd = new Date(startDate);
+      maxEnd.setDate(maxEnd.getDate() + 14);
+      return maxEnd;
+    }
 
-    // Refresh disabled dates on calendars
-    refreshCalendars(itemId);
+    function generateDisabledDates(itemId) {
+      if (!bookings[itemId] || bookings[itemId].length === 0) return [];
 
-    // Clear inputs
-    startInput.value = "";
-    endInput.value = "";
+      return bookings[itemId].flatMap(booking => {
+        const buffered = getBufferedRange(booking);
+        return [{ from: buffered.start, to: buffered.end }];
+      });
+    }
+
+    function addToBasketWithDates(itemId) {
+      const startInput = document.getElementById(`start-${itemId}`);
+      const endInput = document.getElementById(`end-${itemId}`);
+
+      if (!startInput.value || !endInput.value) {
+        alert("Please select both start and end dates.");
+        return;
+      }
+
+      const startDate = new Date(startInput.value);
+      const endDate = new Date(endInput.value);
+
+      if (startDate > endDate) {
+        alert("Start date cannot be after end date.");
+        return;
+      }
+
+      if (startDate.getTime() === endDate.getTime()) {
+        alert("Start and end date must be different.");
+        return;
+      }
+
+      if (checkBookingConflict(itemId, startDate, endDate)) {
+        alert("Selected dates overlap with existing booking or buffer period. Please choose different dates.");
+        return;
+      }
+
+      basket.push({
+        id: itemId,
+        name: furnitureData[itemId].name,
+        price: furnitureData[itemId].price,
+        startDate,
+        endDate,
+        qty: 1
+      });
+
+      bookings[itemId].push({ start: startDate, end: endDate });
+      refreshCalendars(itemId);
+
+      startInput.value = "";
+      endInput.value = "";
+
+      renderBasket();
+    }
+
+    function refreshCalendars(itemId) {
+      const disabledDates = generateDisabledDates(itemId);
+      furnitureData[itemId].startCalendar.set('disable', disabledDates);
+      furnitureData[itemId].endCalendar.set('disable', disabledDates);
+    }
+
+    function removeFromBasket(index) {
+      const removed = basket.splice(index, 1)[0];
+
+      bookings[removed.id] = bookings[removed.id].filter(b => {
+        return !(b.start.getTime() === removed.startDate.getTime() &&
+                 b.end.getTime() === removed.endDate.getTime());
+      });
+
+      refreshCalendars(removed.id);
+      renderBasket();
+    }
+
+    function renderBasket() {
+      const basketItemsDiv = document.getElementById("basket-items");
+      basketItemsDiv.innerHTML = "";
+
+      let total = 0;
+
+      basket.forEach((item, index) => {
+        const timeDiff = item.endDate.getTime() - item.startDate.getTime();
+        const days = Math.floor(timeDiff / (1000 * 3600 * 24)) + 1;
+        const itemTotal = days * item.price * item.qty;
+        total += itemTotal;
+
+        const el = document.createElement("div");
+        el.className = "basket-item";
+        el.innerHTML = `
+          <span>
+            ${item.name} (${formatDate(item.startDate)} to ${formatDate(item.endDate)})<br>
+            £${item.price} x ${days} days
+          </span>
+          <button onclick="removeFromBasket(${index})">Remove</button>
+        `;
+        basketItemsDiv.appendChild(el);
+      });
+
+      document.getElementById("basket-total").textContent = total.toLocaleString(undefined, {
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2
+      });
+    }
+
+    function formatDate(date) {
+      return date.toISOString().split("T")[0];
+    }
 
     renderBasket();
-  }
-
-  // Refresh calendars disabled dates for a specific item
-  function refreshCalendars(itemId) {
-    const disabledDates = generateDisabledDates(itemId);
-    furnitureData[itemId].startCalendar.set('disable', disabledDates);
-    furnitureData[itemId].endCalendar.set('disable', disabledDates);
-  }
-
-  // Remove from basket and free up bookings
-  function removeFromBasket(index) {
-    const removed = basket.splice(index, 1)[0];
-
-    // Remove booking from bookings array for that item
-    bookings[removed.id] = bookings[removed.id].filter(b => {
-      return !(
-        b.start.getTime() === removed.startDate.getTime() &&
-        b.end.getTime() === removed.endDate.getTime()
-      );
-    });
-
-    // Refresh calendars for that item
-    refreshCalendars(removed.id);
-
-    renderBasket();
-  }
-
-  // Render basket contents and total
-  function renderBasket() {
-    const basketItemsDiv = document.getElementById("basket-items");
-    basketItemsDiv.innerHTML = "";
-
-    let total = 0;
-
-    basket.forEach((item, index) => {
-      // Calculate days hired (inclusive)
-      const timeDiff = item.endDate.getTime() - item.startDate.getTime();
-      const days = Math.floor(timeDiff / (1000 * 3600 * 24)) + 1;
-
-      const itemTotal = days * item.price * item.qty;
-      total += itemTotal;
-
-      const el = document.createElement("div");
-      el.className = "basket-item";
-      el.innerHTML = `
-        <span>
-          ${item.name} (${formatDate(item.startDate)} to ${formatDate(item.endDate)})<br>
-          £${item.price} x ${days} days
-        </span>
-        <button onclick="removeFromBasket(${index})">Remove</button>
-      `;
-      basketItemsDiv.appendChild(el);
-    });
-
-    document.getElementById("basket-total").textContent = total.toFixed(2);
-  }
-
-  // Format date as YYYY-MM-DD
-  function formatDate(date) {
-    return date.toISOString().split("T")[0];
-  }
-
-  // Initialize basket rendering
-  renderBasket();
-</script>
-
+  </script>
 </body>
 </html>
