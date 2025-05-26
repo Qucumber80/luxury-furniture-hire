@@ -222,10 +222,10 @@
   }
 </script>
 
-  let cart = [];
+  let basket = [];
   let total = 0;
 
-  function addToCart(name, price, startId, endId) {
+  function addToBasket(name, price, startId, endId) {
     const startDate = document.getElementById(startId).value;
     const endDate = document.getElementById(endId).value;
 
@@ -234,19 +234,19 @@
       return;
     }
 
-    cart.push({ name, price, startDate, endDate });
+    basket.push({ name, price, startDate, endDate });
     total += price;
-    renderCart();
+    renderBasket();
   }
 
-  function renderCart() {
-    const cartItems = document.getElementById("cart-items");
-    cartItems.innerHTML = "";
+  function renderBasket() {
+    const cartItems = document.getElementById("Basket-items");
+    basketItems.innerHTML = "";
 
-    cart.forEach(item => {
+    basket.forEach(item => {
       const li = document.createElement("li");
-      li.textContent = `${item.name} - £${item.price} (From ${item.startDate} to ${item.endDate})`;
-      cartItems.appendChild(li);
+      li.textContent = `£{item.name} - £{item.price} (From £{item.startDate} to £{item.endDate})`;
+      basketItems.appendChild(li);
     });
 
     document.getElementById("total").textContent = total;
