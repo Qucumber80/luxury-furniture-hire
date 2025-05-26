@@ -286,8 +286,31 @@
   }
 
   // Check if desired booking conflicts with existing bookings + buffer
-  function checkBookingConflict(itemId, startDate, endDate) {
-    if (!bookings[itemId]) return false;
+ function checkBookingConflict(itemId, startDate, endDate) {
+  const desiredStart = new Date(startDate.getTime() - BUFFER_MS);
+  const desiredEnd = new Date(endDate.getTime() + BUFFER_MS);
+
+  // Check against confirmed bookings
+  const itemBookings = bookings[itemId] || [];
+  for (const b of itemBookings) {
+    const buffered = getBufferedRange(b);
+    if (rangesOverlap(desiredStart, desiredEnd, buffered.start, buffered.end)) {
+      return true;
+    }
+  }
+
+  // Check against pending basket entries
+  for (const item of basket) {
+    if (item.id !== itemId) continue;
+    const buffered = getBufferedRange({ start: item.startDate, end: item.endDate });
+    if (rangesOverlap(desiredStart, desiredEnd, buffered.start, buffered.end)) {
+      return true;
+    }
+  }
+
+  return false;
+}
+
 
     // Add buffer to desired range
     const desiredStart = new Date(startDate.getTime() - BUFFER_MS);
