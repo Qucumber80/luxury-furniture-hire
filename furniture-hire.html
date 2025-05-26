@@ -5,36 +5,64 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Luxurious Furniture Hire</title>
-</head>
-<body>
- <nav class="top-banner">
-  <div class="container nav-container">
-    <ul class="nav-links">
-      <li><a href="index.html">Home</a></li>
-      <li><a href="about.html">About Us</a></li>
-      <li><a href="furniture-hire.html" class="active">Furniture Hire</a></li>
-      <li><a href="gallery.html">Gallery</a></li>
-      <li><a href="contact.html">Contact</a></li>
-    </ul>
-  </div>
-</nav>
-
   <style>
     body {
       font-family: Arial, sans-serif;
-      padding: 20px;
+      margin: 0;
       background: #f8f8f8;
     }
+
+    /* Sticky Black Header Nav */
+    nav.top-banner {
+      background: #000;
+      position: sticky;
+      top: 0;
+      width: 100%;
+      z-index: 1000;
+    }
+
+    .nav-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 10px 20px;
+    }
+
+    .nav-links {
+      list-style: none;
+      display: flex;
+      justify-content: center;
+      padding: 0;
+      margin: 0;
+    }
+
+    .nav-links li {
+      margin: 0 15px;
+    }
+
+    .nav-links a {
+      color: #fff;
+      text-decoration: none;
+      font-weight: bold;
+      padding: 8px 5px;
+    }
+
+    .nav-links a.active,
+    .nav-links a:hover {
+      border-bottom: 2px solid #bfa760;
+    }
+
     h1 {
       color: #333;
-      margin-bottom: 20px;
+      margin: 30px 20px 10px;
     }
+
     .furniture-list {
       display: flex;
       gap: 20px;
       flex-wrap: wrap;
-      margin-bottom: 40px;
+      padding: 20px;
     }
+
     .item {
       border: 1px solid #ccc;
       background: white;
@@ -44,27 +72,32 @@
       border-radius: 6px;
       text-align: center;
     }
+
     .item img {
       width: 100%;
       height: 140px;
       object-fit: cover;
       border-radius: 4px;
     }
+
     .item h3 {
       margin: 10px 0 6px;
       font-size: 1.2rem;
       color: #222;
     }
+
     .item p {
       margin: 0 0 10px;
       color: #666;
       font-weight: 600;
     }
+
     label {
       display: block;
       margin: 10px 0 5px;
       font-weight: 600;
     }
+
     input.flatpickr-input {
       width: 100%;
       padding: 8px;
@@ -74,6 +107,7 @@
       box-sizing: border-box;
       cursor: pointer;
     }
+
     button {
       background: #bfa760;
       color: white;
@@ -86,6 +120,7 @@
       margin-top: 10px;
       width: 100%;
     }
+
     button:hover {
       background: #a38e48;
     }
@@ -94,7 +129,7 @@
     .basket {
       position: fixed;
       right: 20px;
-      top: 80px;
+      top: 100px;
       width: 320px;
       background: #fff;
       border: 1px solid #ccc;
@@ -105,12 +140,14 @@
       border-radius: 6px;
       font-size: 14px;
     }
+
     .basket h3 {
       margin-top: 0;
       border-bottom: 1px solid #ddd;
       padding-bottom: 10px;
       font-size: 1.4rem;
     }
+
     .basket-item {
       display: flex;
       justify-content: space-between;
@@ -119,265 +156,258 @@
       font-weight: 600;
       color: #333;
     }
-    .basket-item button {
-      background: #e74c3c;
-      border: none;
-      color: white;
-      padding: 4px 8px;
-      font-size: 0.8rem;
-      border-radius: 4px;
+
+    .basket-item span {
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .basket-item img.bin-icon {
+      width: 20px;
+      height: 20px;
       cursor: pointer;
-      transition: background 0.3s ease;
+      margin-left: 10px;
+      transition: opacity 0.2s;
     }
-    .basket-item button:hover {
-      background: #c0392b;
+
+    .basket-item img.bin-icon:hover {
+      opacity: 0.7;
     }
+
     #basket-total {
       font-size: 1.3rem;
       color: #bfa760;
       font-weight: 700;
       margin-top: 10px;
-      display: block;
       text-align: right;
+      display: block;
     }
   </style>
+</head>
+<body>
 
-  <h1>Furniture Hire</h1>
+<!-- Sticky Header -->
+<nav class="top-banner">
+  <div class="container nav-container">
+    <ul class="nav-links">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="about.html">About Us</a></li>
+      <li><a href="furniture-hire.html" class="active">Furniture Hire</a></li>
+      <li><a href="gallery.html">Gallery</a></li>
+      <li><a href="contact.html">Contact</a></li>
+    </ul>
+  </div>
+</nav>
 
-  <div class="furniture-list">
-    <div class="item" data-id="1" data-price="50">
-      <img src="images/chain-bed.jpg" alt="Chain-Bed" />
-      <h3>Chain Bed</h3>
-      <p>£50 per day</p>
-      <label for="start-1">Start Date:</label>
-      <input type="text" id="start-1" placeholder="Select start date" readonly />
-      <label for="end-1">End Date:</label>
-      <input type="text" id="end-1" placeholder="Select end date" readonly />
-      <button onclick="addToBasketWithDates(1)">Add to Basket</button>
-    </div>
+<h1>Furniture Hire</h1>
 
-    <div class="item" data-id="2" data-price="30">
-      <img src="images/flog.jpg" alt="Flog" />
-      <h3>Flog</h3>
-      <p>£30 per day</p>
-      <label for="start-2">Start Date:</label>
-      <input type="text" id="start-2" placeholder="Select start date" readonly />
-      <label for="end-2">End Date:</label>
-      <input type="text" id="end-2" placeholder="Select end date" readonly />
-      <button onclick="addToBasketWithDates(2)">Add to Basket</button>
-    </div>
-
-    <div class="item" data-id="3" data-price="40">
-      <img src="images/lock-and-key.jpg" alt="Chains" />
-      <h3>Chains</h3>
-      <p>£40 per day</p>
-      <label for="start-3">Start Date:</label>
-      <input type="text" id="start-3" placeholder="Select start date" readonly />
-      <label for="end-3">End Date:</label>
-      <input type="text" id="end-3" placeholder="Select end date" readonly />
-      <button onclick="addToBasketWithDates(3)">Add to Basket</button>
-    </div>
+<div class="furniture-list">
+  <!-- Item 1 -->
+  <div class="item" data-id="1" data-price="50">
+    <img src="images/chain-bed.jpg" alt="Chain-Bed" />
+    <h3>Chain Bed</h3>
+    <p>£50 per day</p>
+    <label for="start-1">Start Date:</label>
+    <input type="text" id="start-1" placeholder="Select start date" readonly />
+    <label for="end-1">End Date:</label>
+    <input type="text" id="end-1" placeholder="Select end date" readonly />
+    <button onclick="addToBasketWithDates(1)">Add to Basket</button>
   </div>
 
-  <div class="basket" id="basket">
-    <h3>Your Basket</h3>
-    <div id="basket-items"></div>
-    <p><strong>Total: £<span id="basket-total">0</span></strong></p>
+  <!-- Item 2 -->
+  <div class="item" data-id="2" data-price="30">
+    <img src="images/flog.jpg" alt="Flog" />
+    <h3>Flog</h3>
+    <p>£30 per day</p>
+    <label for="start-2">Start Date:</label>
+    <input type="text" id="start-2" placeholder="Select start date" readonly />
+    <label for="end-2">End Date:</label>
+    <input type="text" id="end-2" placeholder="Select end date" readonly />
+    <button onclick="addToBasketWithDates(2)">Add to Basket</button>
   </div>
 
-  <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
-  <script>
-    const furnitureData = {
-      1: { name: "Chain Bed", price: 50 },
-      2: { name: "Flog", price: 30 },
-      3: { name: "Chains", price: 40 },
+  <!-- Item 3 -->
+  <div class="item" data-id="3" data-price="40">
+    <img src="images/lock-and-key.jpg" alt="Chains" />
+    <h3>Chains</h3>
+    <p>£40 per day</p>
+    <label for="start-3">Start Date:</label>
+    <input type="text" id="start-3" placeholder="Select start date" readonly />
+    <label for="end-3">End Date:</label>
+    <input type="text" id="end-3" placeholder="Select end date" readonly />
+    <button onclick="addToBasketWithDates(3)">Add to Basket</button>
+  </div>
+</div>
+
+<!-- Basket -->
+<div class="basket" id="basket">
+  <h3>Your Basket</h3>
+  <div id="basket-items"></div>
+  <p><strong>Total: £<span id="basket-total">0.00</span></strong></p>
+</div>
+
+<!-- Flatpickr -->
+<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+
+<script>
+  const furnitureData = {
+    1: { name: "Chain Bed", price: 50 },
+    2: { name: "Flog", price: 30 },
+    3: { name: "Chains", price: 40 },
+  };
+
+  const bookings = {
+    1: [],
+    2: [],
+    3: []
+  };
+
+  const BUFFER_MS = 48 * 60 * 60 * 1000;
+  let basket = [];
+
+  function getBufferedRange(booking) {
+    return {
+      start: new Date(booking.start.getTime() - BUFFER_MS),
+      end: new Date(booking.end.getTime() + BUFFER_MS)
     };
+  }
 
-    const bookings = {
-      1: [
-        { start: new Date("2025-06-10"), end: new Date("2025-06-12") },
-        { start: new Date("2025-06-20"), end: new Date("2025-06-22") },
-      ],
-      2: [{ start: new Date("2025-06-15"), end: new Date("2025-06-17") }],
-      3: []
-    };
+  function rangesOverlap(aStart, aEnd, bStart, bEnd) {
+    return aStart <= bEnd && bStart <= aEnd;
+  }
 
-    let basket = [];
-    const BUFFER_MS = 48 * 60 * 60 * 1000;
+  function addMaxEndDate(startDate) {
+    const maxEnd = new Date(startDate);
+    maxEnd.setDate(maxEnd.getDate() + 14);
+    return maxEnd;
+  }
 
-    function getBufferedRange(booking) {
-      return {
-        start: new Date(booking.start.getTime() - BUFFER_MS),
-        end: new Date(booking.end.getTime() + BUFFER_MS)
-      };
-    }
+  function generateDisabledDates(itemId) {
+    if (!bookings[itemId]) return [];
+    return bookings[itemId].flatMap(b => {
+      const buffer = getBufferedRange(b);
+      return [{ from: buffer.start, to: buffer.end }];
+    });
+  }
 
-    function rangesOverlap(aStart, aEnd, bStart, bEnd) {
-      return aStart <= bEnd && bStart <= aEnd;
-    }
+  Object.keys(furnitureData).forEach(id => {
+    const startInput = document.getElementById(`start-${id}`);
+    const endInput = document.getElementById(`end-${id}`);
 
-    function checkBookingConflict(itemId, startDate, endDate) {
-      const desiredStart = new Date(startDate.getTime() - BUFFER_MS);
-      const desiredEnd = new Date(endDate.getTime() + BUFFER_MS);
-
-      const itemBookings = bookings[itemId] || [];
-      for (const b of itemBookings) {
-        const buffered = getBufferedRange(b);
-        if (rangesOverlap(desiredStart, desiredEnd, buffered.start, buffered.end)) {
-          return true;
+    const startCalendar = flatpickr(startInput, {
+      dateFormat: "Y-m-d",
+      minDate: "today",
+      disable: generateDisabledDates(id),
+      onChange(selectedDates) {
+        if (selectedDates.length > 0) {
+          endCalendar.set('minDate', selectedDates[0]);
+          endCalendar.set('maxDate', addMaxEndDate(selectedDates[0]));
         }
       }
-
-      for (const item of basket) {
-        if (item.id !== itemId) continue;
-        const buffered = getBufferedRange({ start: item.startDate, end: item.endDate });
-        if (rangesOverlap(desiredStart, desiredEnd, buffered.start, buffered.end)) {
-          return true;
-        }
-      }
-
-      return false;
-    }
-
-    Object.keys(furnitureData).forEach(id => {
-      const startInput = document.getElementById(`start-${id}`);
-      const endInput = document.getElementById(`end-${id}`);
-
-      const startCalendar = flatpickr(startInput, {
-        dateFormat: "Y-m-d",
-        minDate: "today",
-        disable: generateDisabledDates(id),
-        onChange(selectedDates) {
-          if (selectedDates.length > 0) {
-            endCalendar.set('minDate', selectedDates[0]);
-            endCalendar.set('maxDate', addMaxEndDate(selectedDates[0]));
-          } else {
-            endCalendar.set('minDate', "today");
-            endCalendar.set('maxDate', null);
-          }
-        }
-      });
-
-      const endCalendar = flatpickr(endInput, {
-        dateFormat: "Y-m-d",
-        minDate: "today",
-        disable: generateDisabledDates(id)
-      });
-
-      furnitureData[id].startCalendar = startCalendar;
-      furnitureData[id].endCalendar = endCalendar;
     });
 
-    function addMaxEndDate(startDate) {
-      const maxEnd = new Date(startDate);
-      maxEnd.setDate(maxEnd.getDate() + 14);
-      return maxEnd;
-    }
+    const endCalendar = flatpickr(endInput, {
+      dateFormat: "Y-m-d",
+      minDate: "today",
+      disable: generateDisabledDates(id)
+    });
 
-    function generateDisabledDates(itemId) {
-      if (!bookings[itemId] || bookings[itemId].length === 0) return [];
-
-      return bookings[itemId].flatMap(booking => {
-        const buffered = getBufferedRange(booking);
-        return [{ from: buffered.start, to: buffered.end }];
-      });
-    }
-
-    function addToBasketWithDates(itemId) {
-      const startInput = document.getElementById(`start-${itemId}`);
-      const endInput = document.getElementById(`end-${itemId}`);
-
-      if (!startInput.value || !endInput.value) {
-        alert("Please select both start and end dates.");
-        return;
-      }
-
-      const startDate = new Date(startInput.value);
-      const endDate = new Date(endInput.value);
-
-      if (startDate > endDate) {
-        alert("Start date cannot be after end date.");
-        return;
-      }
-
-      if (startDate.getTime() === endDate.getTime()) {
-        alert("Start and end date must be different.");
-        return;
-      }
-
-      if (checkBookingConflict(itemId, startDate, endDate)) {
-        alert("Selected dates overlap with existing booking or buffer period. Please choose different dates.");
-        return;
-      }
-
-      basket.push({
-        id: itemId,
-        name: furnitureData[itemId].name,
-        price: furnitureData[itemId].price,
-        startDate,
-        endDate,
-        qty: 1
-      });
-
-      bookings[itemId].push({ start: startDate, end: endDate });
-      refreshCalendars(itemId);
-
-      startInput.value = "";
-      endInput.value = "";
-
-      renderBasket();
-    }
-
-    function refreshCalendars(itemId) {
-      const disabledDates = generateDisabledDates(itemId);
-      furnitureData[itemId].startCalendar.set('disable', disabledDates);
-      furnitureData[itemId].endCalendar.set('disable', disabledDates);
-    }
-
-    function removeFromBasket(index) {
-      const removed = basket.splice(index, 1)[0];
-
-      bookings[removed.id] = bookings[removed.id].filter(b => {
-        return !(b.start.getTime() === removed.startDate.getTime() &&
-                 b.end.getTime() === removed.endDate.getTime());
-      });
-
-      refreshCalendars(removed.id);
-      renderBasket();
-    }
-
-    function renderBasket() {
-  const basketItemsDiv = document.getElementById("basket-items");
-  basketItemsDiv.innerHTML = "";
-
-  let total = 0;
-
-  basket.forEach((item, index) => {
-    const timeDiff = item.endDate.getTime() - item.startDate.getTime();
-    const days = Math.floor(timeDiff / (1000 * 3600 * 24)) + 1;
-    const itemTotal = days * item.price * item.qty;
-    total += itemTotal;
-
-    const el = document.createElement("div");
-    el.className = "basket-item";
-    el.innerHTML = `
-      <span>
-        ${item.name} – ${days} day${days > 1 ? 's' : ''} – £${itemTotal.toFixed(2)}
-      </span>
-      <button onclick="removeFromBasket(${index})">Remove</button>
-    `;
-    basketItemsDiv.appendChild(el);
+    furnitureData[id].startCalendar = startCalendar;
+    furnitureData[id].endCalendar = endCalendar;
   });
 
-  document.getElementById("basket-total").textContent = total.toFixed(2);
-}
+  function checkBookingConflict(itemId, startDate, endDate) {
+    const desiredStart = new Date(startDate.getTime() - BUFFER_MS);
+    const desiredEnd = new Date(endDate.getTime() + BUFFER_MS);
+    return bookings[itemId].some(b => {
+      const buffered = getBufferedRange(b);
+      return rangesOverlap(desiredStart, desiredEnd, buffered.start, buffered.end);
+    });
+  }
 
+  function addToBasketWithDates(itemId) {
+    const startInput = document.getElementById(`start-${itemId}`);
+    const endInput = document.getElementById(`end-${itemId}`);
 
-    function formatDate(date) {
-      return date.toISOString().split("T")[0];
+    if (!startInput.value || !endInput.value) {
+      alert("Please select both start and end dates.");
+      return;
     }
 
+    const startDate = new Date(startInput.value);
+    const endDate = new Date(endInput.value);
+    if (startDate > endDate) {
+      alert("Start date cannot be after end date.");
+      return;
+    }
+
+    if (checkBookingConflict(itemId, startDate, endDate)) {
+      alert("Selected dates conflict with existing bookings.");
+      return;
+    }
+
+    basket.push({
+      id: itemId,
+      name: furnitureData[itemId].name,
+      price: furnitureData[itemId].price,
+      startDate,
+      endDate
+    });
+
+    bookings[itemId].push({ start: startDate, end: endDate });
+
+    startInput.value = "";
+    endInput.value = "";
+
+    refreshCalendars(itemId);
     renderBasket();
-  </script>
+  }
+
+  function refreshCalendars(itemId) {
+    const disabledDates = generateDisabledDates(itemId);
+    furnitureData[itemId].startCalendar.set('disable', disabledDates);
+    furnitureData[itemId].endCalendar.set('disable', disabledDates);
+  }
+
+  function removeFromBasket(index) {
+    const removed = basket.splice(index, 1)[0];
+    bookings[removed.id] = bookings[removed.id].filter(b =>
+      b.start.getTime() !== removed.startDate.getTime() ||
+      b.end.getTime() !== removed.endDate.getTime()
+    );
+    refreshCalendars(removed.id);
+    renderBasket();
+  }
+
+  function formatDate(date) {
+    return date.toISOString().split("T")[0];
+  }
+
+  function renderBasket() {
+    const container = document.getElementById("basket-items");
+    container.innerHTML = "";
+
+    let total = 0;
+    basket.forEach((item, index) => {
+      const days = Math.floor((item.endDate - item.startDate) / (1000 * 60 * 60 * 24)) + 1;
+      const itemTotal = item.price * days;
+      total += itemTotal;
+
+      const el = document.createElement("div");
+      el.className = "basket-item";
+      el.innerHTML = `
+        <span>${item.name} - ${days} day(s): £${itemTotal}</span>
+        <img src="https://img.icons8.com/ios-glyphs/30/000000/trash.png" alt="Remove" class="bin-icon" onclick="removeFromBasket(${index})" />
+      `;
+      container.appendChild(el);
+    });
+
+    document.getElementById("basket-total").textContent = total.toFixed(2);
+  }
+
+  renderBasket();
+</script>
+
 </body>
 </html>
