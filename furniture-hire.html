@@ -3,12 +3,13 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Furniture Hire</title>
+  <title>Furniture Hire with Availability</title>
+
   <!-- Flatpickr CSS -->
-<link
-  rel="stylesheet"
-  href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css"
-/>
+  <link
+    rel="stylesheet"
+    href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css"
+  />
 
   <style>
     /* quick styles for demo */
@@ -52,6 +53,19 @@
       color: #666;
       font-weight: 600;
     }
+    .item label {
+      display: block;
+      margin: 8px 0 6px;
+      font-weight: 600;
+      font-size: 0.9rem;
+    }
+    .item input[type="text"], .item input[type="date"] {
+      width: 100%;
+      padding: 6px;
+      box-sizing: border-box;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+    }
     .item button {
       background: #bfa760;
       color: white;
@@ -61,6 +75,8 @@
       font-weight: 600;
       border-radius: 4px;
       transition: background 0.3s ease;
+      margin-top: 10px;
+      width: 100%;
     }
     .item button:hover {
       background: #a38e48;
@@ -126,37 +142,37 @@
     <img src="images/chain-bed.jpg" alt="Chain-Bed" />
     <h3>Chain-Bed</h3>
     <p>£50 per hire</p>
-     <label>Start Date:
-      <input type="date" id="start-Chain-Bed">
-    </label>
-    <label>End Date:
+    <label>Start Date:
       <input type="text" id="start-Chain-Bed" placeholder="Select start date" readonly />
     </label>
-    <button onclick="addToBasketWithDates(1, 'Chain-Bed', 50, 'start-Chain-Bed', 'end-Chain-Bed')">Add to Basket</button>
+    <label>End Date:
+      <input type="text" id="end-Chain-Bed" placeholder="Select end date" readonly />
+    </label>
+    <button onclick="addToBasketWithDates(1, 'Chain Bed', 50, 'start-Chain-Bed', 'end-Chain-Bed')">Add to Basket</button>
   </div>
-  
+
   <div class="item" data-id="2" data-price="30">
     <img src="images/flog.jpg" alt="Flog" />
     <h3>Flog</h3>
     <p>£30 per hire</p>
-     <label>Start Date:
-      <input type="date" id="start-Flog">
+    <label>Start Date:
+      <input type="text" id="start-Flog" placeholder="Select start date" readonly />
     </label>
     <label>End Date:
-      <input type="text" id="start-Flog" placeholder="Select start date" readonly />
+      <input type="text" id="end-Flog" placeholder="Select end date" readonly />
     </label>
     <button onclick="addToBasketWithDates(2, 'Flog', 30, 'start-Flog', 'end-Flog')">Add to Basket</button>
   </div>
-  
+
   <div class="item" data-id="3" data-price="40">
     <img src="images/lock and key.jpg" alt="Chains" />
     <h3>Chains</h3>
     <p>£40 per hire</p>
-      <label>Start Date:
-        <input type="date" id="start-Chains">
-      </label>
-      <label>End Date:
-        <input type="text" id="start-Chains" placeholder="Select start date" readonly />
+    <label>Start Date:
+      <input type="text" id="start-Chains" placeholder="Select start date" readonly />
+    </label>
+    <label>End Date:
+      <input type="text" id="end-Chains" placeholder="Select end date" readonly />
     </label>
     <button onclick="addToBasketWithDates(3, 'Chains', 40, 'start-Chains', 'end-Chains')">Add to Basket</button>
   </div>
@@ -168,6 +184,9 @@
   <p><strong>Total: £<span id="basket-total">0</span></strong></p>
 </div>
 
+<!-- Flatpickr JS -->
+<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+
 <script>
   const furnitureData = {
     1: { name: "Chain Bed", price: 50 },
@@ -175,9 +194,75 @@
     3: { name: "Chains", price: 40 },
   };
 
+  // Store all bookings per item {itemId: [{startDate, endDate}, ...]}
+  const bookings = {
+    1: [],
+    2: [],
+    3: []
+  };
+
   let basket = {};
 
-  // Updated function accepts all 5 parameters as in your button calls
+  // Convert Date obj to 'YYYY-MM-DD'
+  function formatDate(date) {
+    return date.toISOString().split('T')[0];
+  }
+
+  // Return disabled ranges for flatpickr (bookings + 48h buffer)
+  function getDisabledRanges(itemId) {
+    const bookedRanges = bookings[itemId] || [];
+    return bookedRanges.map(b => {
+      const from = new Date(b.startDate);
+      const to = new Date(b.endDate);
+      to.setDate(to.getDate() + 2); // add 2 days buffer after endDate
+
+      return {
+        from: formatDate(from),
+        to: formatDate(to)
+      };
+    });
+  }
+
+  // Setup flatpickr calendars with disabled dates and linked start/end
+  function setupFlatpickr(itemId, startInputId, endInputId) {
+    const startInput = document.getElementById(startInputId);
+    const endInput = document.getElementById(endInputId);
+
+    const disabledRanges = getDisabledRanges(itemId);
+
+    const endPicker = flatpickr(endInput, {
+      dateFormat: "Y-m-d",
+      disable: disabledRanges,
+      minDate: "today",
+      clickOpens: true,
+    });
+
+    flatpickr(startInput, {
+      dateFormat: "Y-m-d",
+      disable: disabledRanges,
+      minDate: "today",
+      clickOpens: true,
+      onChange: function(selectedDates) {
+        if (selectedDates.length > 0) {
+          const minEndDate = new Date(selectedDates[0].getTime());
+          minEndDate.setDate(minEndDate.getDate() + 1);
+          endPicker.set('minDate', minEndDate);
+
+          if (endPicker.selectedDates.length > 0 && endPicker.selectedDates[0] < minEndDate) {
+            endPicker.clear();
+          }
+        }
+      }
+    });
+  }
+
+  // Initialize flatpickr for each item after page loads
+  window.addEventListener('DOMContentLoaded', () => {
+    setupFlatpickr(1, 'start-Chain-Bed', 'end-Chain-Bed');
+    setupFlatpickr(2, 'start-Flog', 'end-Flog');
+    setupFlatpickr(3, 'start-Chains', 'end-Chains');
+  });
+
   function addToBasketWithDates(id, name, price, startId, endId) {
     const startDate = document.getElementById(startId).value;
     const endDate = document.getElementById(endId).value;
@@ -187,6 +272,16 @@
       return;
     }
 
+    // Check if new booking overlaps existing booking or violates 48h buffer
+    if (isBookingConflict(id, startDate, endDate)) {
+      alert("Selected dates conflict with existing bookings or buffer period. Please choose different dates.");
+      return;
+    }
+
+    // Add booking to bookings
+    bookings[id].push({ startDate, endDate });
+
+    // Add or update basket
     if (basket[id]) {
       basket[id].qty++;
     } else {
@@ -200,11 +295,57 @@
     }
 
     renderBasket();
+
+    // Reset inputs and update calendars
+    document.getElementById(startId)._flatpickr.clear();
+    document.getElementById(endId)._flatpickr.clear();
+    setupFlatpickr(id, startId, endId);
+  }
+
+  // Check if proposed booking conflicts with existing bookings + buffer
+  function isBookingConflict(itemId, newStart, newEnd) {
+    const newStartDate = new Date(newStart);
+    const newEndDate = new Date(newEnd);
+
+    // Add buffer of 2 days before and after new booking for safety
+    const bufferedNewStart = new Date(newStartDate);
+    bufferedNewStart.setDate(bufferedNewStart.getDate() - 2);
+    const bufferedNewEnd = new Date(newEndDate);
+    bufferedNewEnd.setDate(bufferedNewEnd.getDate() + 2);
+
+    for (const booking of bookings[itemId]) {
+      const existingStart = new Date(booking.startDate);
+      const existingEnd = new Date(booking.endDate);
+
+      // Add buffer 2 days before and after existing booking
+      const bufferedExistingStart = new Date(existingStart);
+      bufferedExistingStart.setDate(bufferedExistingStart.getDate() - 2);
+      const bufferedExistingEnd = new Date(existingEnd);
+      bufferedExistingEnd.setDate(bufferedExistingEnd.getDate() + 2);
+
+      // Check if buffered new booking overlaps buffered existing booking
+      if (
+        bufferedNewStart <= bufferedExistingEnd &&
+        bufferedNewEnd >= bufferedExistingStart
+      ) {
+        return true; // conflict found
+      }
+    }
+    return false; // no conflicts
   }
 
   function removeFromBasket(id) {
+    // Remove booking(s) for this item too
     delete basket[id];
+    delete bookings[id];
+    bookings[id] = []; // reset bookings for this item
+
     renderBasket();
+
+    // Reset calendars for this item (all available)
+    if(id === 1) setupFlatpickr(1, 'start-Chain-Bed', 'end-Chain-Bed');
+    else if(id === 2) setupFlatpickr(2, 'start-Flog', 'end-Flog');
+    else if(id === 3) setupFlatpickr(3, 'start-Chains', 'end-Chains');
   }
 
   function renderBasket() {
@@ -232,18 +373,3 @@
 </script>
 </body>
 </html>
-flatpickr(startInput, {
-  minDate: "today",
-  dateFormat: "Y-m-d",
-  onChange: function(selectedDates) {
-    if (selectedDates.length > 0) {
-      // set min end date = start date + 1 day
-      const minEndDate = new Date(selectedDates[0].getTime());
-      minEndDate.setDate(minEndDate.getDate() + 1);
-      endPicker.set('minDate', minEndDate);
-      if (endPicker.selectedDates.length > 0 && endPicker.selectedDates[0] < minEndDate) {
-        endPicker.clear();
-      }
-    }
-  }
-});
