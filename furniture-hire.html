@@ -172,30 +172,30 @@
 
   let basket = {};
 
+  // Updated function accepts all 5 parameters as in your button calls
   function addToBasketWithDates(id, name, price, startId, endId) {
-  const startDate = document.getElementById(startId).value;
-  const endDate = document.getElementById(endId).value;
+    const startDate = document.getElementById(startId).value;
+    const endDate = document.getElementById(endId).value;
 
-  if (!startDate || !endDate) {
-    alert("Please select a start and end date.");
-    return;
+    if (!startDate || !endDate) {
+      alert("Please select a start and end date.");
+      return;
+    }
+
+    if (basket[id]) {
+      basket[id].qty++;
+    } else {
+      basket[id] = {
+        name,
+        price,
+        qty: 1,
+        startDate,
+        endDate
+      };
+    }
+
+    renderBasket();
   }
-
-  if (basket[id]) {
-    basket[id].qty++;
-  } else {
-    basket[id] = {
-      name,
-      price,
-      qty: 1,
-      startDate,
-      endDate
-    };
-  }
-
-  renderBasket();
-}
-
 
   function removeFromBasket(id) {
     delete basket[id];
@@ -224,7 +224,6 @@
 
     document.getElementById('basket-total').innerText = total.toFixed(2);
   }
-
 </script>
 </body>
 </html>
