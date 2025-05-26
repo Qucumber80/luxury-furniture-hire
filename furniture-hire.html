@@ -222,37 +222,7 @@
 
     document.getElementById('basket-total').innerText = total.toFixed(2);
   }
-</script>
 
-  let basket = [];
-  let total = 0;
-
-  function addToBasket(name, price, startId, endId) {
-    const startDate = document.getElementById(startId).value;
-    const endDate = document.getElementById(endId).value;
-
-    if (!startDate || !endDate) {
-      alert("Please select a start and end date.");
-      return;
-    }
-
-    basket.push({ name, price, startDate, endDate });
-    total += price;
-    renderBasket();
-  }
-
-  function renderBasket() {
-    const cartItems = document.getElementById("Basket-items");
-    basketItems.innerHTML = "";
-
-    basket.forEach(item => {
-      const li = document.createElement("li");
-      li.textContent = `${item.name} - ${item.price} (From ${item.startDate} to ${item.endDate})`;
-      basketItems.appendChild(li);
-    });
-
-    document.getElementById("total").textContent = total;
-  }
 </script>
 </body>
 </html>
