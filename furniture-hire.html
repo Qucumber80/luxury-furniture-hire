@@ -130,7 +130,7 @@
       <input type="date" id="start-Chain-Bed">
     </label>
     <label>End Date:
-      <input type="date" id="end-Chain-Bed">
+      <input type="text" id="start-Chain-Bed" placeholder="Select start date" readonly />
     </label>
     <button onclick="addToBasketWithDates(1, 'Chain-Bed', 50, 'start-Chain-Bed', 'end-Chain-Bed')">Add to Basket</button>
   </div>
@@ -143,7 +143,7 @@
       <input type="date" id="start-Flog">
     </label>
     <label>End Date:
-      <input type="date" id="end-Flog">
+      <input type="text" id="start-Flog" placeholder="Select start date" readonly />
     </label>
     <button onclick="addToBasketWithDates(2, 'Flog', 30, 'start-Flog', 'end-Flog')">Add to Basket</button>
   </div>
@@ -156,7 +156,7 @@
         <input type="date" id="start-Chains">
       </label>
       <label>End Date:
-        <input type="date" id="end-Chains">
+        <input type="text" id="start-Chains" placeholder="Select start date" readonly />
     </label>
     <button onclick="addToBasketWithDates(3, 'Chains', 40, 'start-Chains', 'end-Chains')">Add to Basket</button>
   </div>
@@ -232,3 +232,18 @@
 </script>
 </body>
 </html>
+flatpickr(startInput, {
+  minDate: "today",
+  dateFormat: "Y-m-d",
+  onChange: function(selectedDates) {
+    if (selectedDates.length > 0) {
+      // set min end date = start date + 1 day
+      const minEndDate = new Date(selectedDates[0].getTime());
+      minEndDate.setDate(minEndDate.getDate() + 1);
+      endPicker.set('minDate', minEndDate);
+      if (endPicker.selectedDates.length > 0 && endPicker.selectedDates[0] < minEndDate) {
+        endPicker.clear();
+      }
+    }
+  }
+});
