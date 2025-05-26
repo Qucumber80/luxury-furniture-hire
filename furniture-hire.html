@@ -121,7 +121,14 @@
     <img src="images/sofa.jpg" alt="Sofa" />
     <h3>Sofa</h3>
     <p>£50 per hire</p>
-    <button onclick="addToBasket(1)">Add to Basket</button>
+   <label>Start Date:
+  <input type="date" id="start-sofa">
+</label>
+<label>End Date:
+  <input type="date" id="end-sofa">
+</label>
+<button onclick="addToCart('Luxury Sofa', 150, 'start-sofa', 'end-sofa')">Add to Basket</button>
+
   </div>
   <div class="item" data-id="2" data-price="30">
     <img src="images/coffee-table.jpg" alt="Coffee Table" />
