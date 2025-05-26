@@ -3,75 +3,59 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Luxury Furniture Hire</title>
-  <link rel="stylesheet" href="css/styles.css" />
-  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
-  <script src="js/main.js" defer></script>
+  <title>Luxurious Furniture Hire</title>
+  <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
-  <header class="navbar">
-    <div class="container">
-      <div class="logo">Luxury Furniture</div>
-      <nav>
-        <ul class="nav-links">
-          <li><a href="#">Home</a></li>
-          <li><a href="#">Collections</a></li>
-          <li><a href="#">About</a></li>
-          <li><a href="#">Contact</a></li>
-        </ul>
-      </nav>
+  <!-- Navbar -->
+  <nav class="navbar">
+    <div class="container nav-container">
+      <h1 class="logo">YourBrand</h1>
+      <ul class="nav-links">
+        <li><a href="#about">About</a></li>
+        <li><a href="#services">Furniture</a></li>
+        <li><a href="#contact">Contact</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <!-- Hero Section -->
+  <header class="hero">
+    <div class="hero-content">
+      <h1>Luxurious Furniture Hire</h1>
+      <p>Elegant furniture to elevate your event experience.</p>
+      <a href="#contact" class="btn-primary">Get a Quote</a>
     </div>
   </header>
 
-  <section class="hero">
-    <div class="hero-content">
-      <h1>Luxurious Furniture Hire</h1>
-      <p>Elegant, timeless, and delivered to your venue.</p>
-      <a href="#" class="btn">Get in Touch</a>
-    </div>
-  </section>
-
-  <section class="categories container">
-    <h2>Explore Our Collection</h2>
-    <div class="grid">
-      <div class="card">
-        <img src="images/sofa.jpg" alt="Sofas" />
-        <h3>Luxury Sofas</h3>
-      </div>
-      <div class="card">
-        <img src="images/chair.jpg" alt="Chairs" />
-        <h3>Accent Chairs</h3>
-      </div>
-      <div class="card">
-        <img src="images/table.jpg" alt="Tables" />
-        <h3>Dining Tables</h3>
-      </div>
-    </div>
-  </section>
-
-  <section class="features">
+  <!-- About Section -->
+  <section id="about" class="section about">
     <div class="container">
-      <h2>Why Choose Us</h2>
-      <div class="grid">
-        <div class="feature">
-          <h4>Elegant Designs</h4>
-          <p>Our pieces are handpicked for beauty and style.</p>
-        </div>
-        <div class="feature">
-          <h4>Reliable Delivery</h4>
-          <p>On time, every time. No compromises.</p>
-        </div>
-        <div class="feature">
-          <h4>Event Expertise</h4>
-          <p>We cater to weddings, galas, and more.</p>
-        </div>
-      </div>
+      <h2>About Us</h2>
+      <p>We provide premium, stylish furniture hire for weddings, corporate events, private parties, and more. Our carefully curated collection ensures elegance, comfort, and style at every occasion.</p>
     </div>
   </section>
 
-  <footer>
+  <!-- Services Section -->
+  <section id="services" class="section services">
     <div class="container">
-      <p>&copy; 2025 Luxury Furniture Hire. All rights reserved.</p>
+      <h2>Our Collection</h2>
+      <p>Chairs, tables, sofas, decor and more. Each piece is selected to complement a luxury environment and deliver an unforgettable atmosphere.</p>
+    </div>
+  </section>
+
+  <!-- Contact Section -->
+  <section id="contact" class="section contact">
+    <div class="container">
+      <h2>Contact Us</h2>
+      <p>Email: info@yourbrand.co.uk<br>Phone: 01234 567890</p>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container">
+      <p>&copy; 2025 YourBrand Furniture Hire. All rights reserved.</p>
     </div>
   </footer>
 </body>
