@@ -347,34 +347,35 @@
     }
 
     function renderBasket() {
-      const basketItemsDiv = document.getElementById("basket-items");
-      basketItemsDiv.innerHTML = "";
+  const basketItemsDiv = document.getElementById("basket-items");
+  basketItemsDiv.innerHTML = "";
 
-      let total = 0;
+  let total = 0;
 
-      basket.forEach((item, index) => {
-        const timeDiff = item.endDate.getTime() - item.startDate.getTime();
-        const days = Math.floor(timeDiff / (1000 * 3600 * 24)) + 1;
-        const itemTotal = days * item.price * item.qty;
-        total += itemTotal;
+  basket.forEach((item, index) => {
+    const timeDiff = item.endDate.getTime() - item.startDate.getTime();
+    const days = Math.floor(timeDiff / (1000 * 3600 * 24)) + 1;
+    const itemTotal = days * item.price * item.qty;
+    total += itemTotal;
 
-        const el = document.createElement("div");
-        el.className = "basket-item";
-        el.innerHTML = `
-          <span>
-            ${item.name} (${formatDate(item.startDate)} to ${formatDate(item.endDate)})<br>
-            £${item.price} x ${days} days
-          </span>
-          <button onclick="removeFromBasket(${index})">Remove</button>
-        `;
-        basketItemsDiv.appendChild(el);
-      });
+    const el = document.createElement("div");
+    el.className = "basket-item";
+    el.innerHTML = `
+      <span>
+        ${item.name}<br>
+        ${days} day${days > 1 ? 's' : ''} hire<br>
+        £${itemTotal.toFixed(2)}
+      </span>
+      <button onclick="removeFromBasket(${index})">Remove</button>
+    `;
+    basketItemsDiv.appendChild(el);
+  });
 
-      document.getElementById("basket-total").textContent = total.toLocaleString(undefined, {
-        minimumFractionDigits: 2,
-        maximumFractionDigits: 2
-      });
-    }
+  document.getElementById("basket-total").textContent = total.toLocaleString(undefined, {
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2
+  });
+}
 
     function formatDate(date) {
       return date.toISOString().split("T")[0];
